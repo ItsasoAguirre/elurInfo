@@ -1,0 +1,94 @@
+{
+  "app": {
+    "offline": "📶 Mode hors ligne - Affichage des données sauvegardées",
+    "title": "ElurInfo"
+  },
+  "navigation": {
+    "map": "Carte",
+    "stations": "Stations",
+    "settings": "Paramètres"
+  },
+  "map": {
+    "title": "Carte d'Avalanches",
+    "subtitle": "Chaîne des Pyrénées",
+    "legend": {
+      "risk1": "Risque 1 - Faible",
+      "risk2": "Risque 2 - Limité",
+      "risk3": "Risque 3 - Notable",
+      "risk4": "Risque 4 - Fort",
+      "risk5": "Risque 5 - Très fort"
+    }
+  },
+  "stations": {
+    "title": "Stations",
+    "subtitle": "Prévisions de montagne",
+    "loading": "Chargement des prévisions...",
+    "error": "Erreur lors du chargement des prévisions",
+    "retry": "Réessayer",
+    "empty": "Aucune prévision disponible",
+    "updated": "Mis à jour :",
+    "preview": "Voir les détails",
+    "forecastAvailable": "Prévision disponible"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Configuration de l'application",
+    "language": {
+      "title": "Langue",
+      "label": "Langue de l'application"
+    },
+    "zone": {
+      "title": "Zone Favorite",
+      "label": "Zone par défaut",
+      "none": "Aucune",
+      "aragon": "Pyrénées Aragonaises",
+      "navarre": "Pyrénées Navarraises",
+      "catalonia": "Pyrénées Catalanes"
+    },
+    "updates": {
+      "title": "Mise à jour",
+      "auto": "Mise à jour automatique",
+      "autoDescription": "Mettre à jour automatiquement les données lorsqu'elles sont disponibles",
+      "interval": "Intervalle de mise à jour",
+      "intervals": {
+        "15": "15 minutes",
+        "30": "30 minutes",
+        "60": "1 heure",
+        "120": "2 heures"
+      }
+    },
+    "data": {
+      "title": "Données",
+      "clear": "Effacer les données hors ligne",
+      "clearDescription": "Supprimer toutes les données stockées localement",
+      "confirmClear": "Êtes-vous sûr de vouloir supprimer toutes les données hors ligne ?",
+      "cleared": "Données hors ligne supprimées avec succès",
+      "clearError": "Erreur lors de la suppression des données hors ligne"
+    },
+    "info": {
+      "title": "Information",
+      "version": "Version :",
+      "lastUpdate": "Dernière mise à jour :",
+      "connection": "État de la connexion :",
+      "online": "En ligne",
+      "offline": "Hors ligne"
+    }
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English",
+    "fr": "Français",
+    "ca": "Català",
+    "eu": "Euskera"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "retry": "Réessayer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "ok": "OK",
+    "yes": "Oui",
+    "no": "Non"
+  }
+}

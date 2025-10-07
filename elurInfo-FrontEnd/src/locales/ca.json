@@ -1,0 +1,94 @@
+{
+  "app": {
+    "offline": "📶 Mode fora de línia - Mostrant dades guardades",
+    "title": "ElurInfo"
+  },
+  "navigation": {
+    "map": "Mapa",
+    "stations": "Estacions",
+    "settings": "Configuració"
+  },
+  "map": {
+    "title": "Mapa d'Allaus",
+    "subtitle": "Serralada pirinenca",
+    "legend": {
+      "risk1": "Risc 1 - Dèbil",
+      "risk2": "Risc 2 - Limitat",
+      "risk3": "Risc 3 - Notable",
+      "risk4": "Risc 4 - Fort",
+      "risk5": "Risc 5 - Molt fort"
+    }
+  },
+  "stations": {
+    "title": "Estacions",
+    "subtitle": "Prediccions de muntanya",
+    "loading": "Carregant prediccions...",
+    "error": "Error en carregar les prediccions",
+    "retry": "Tornar a intentar",
+    "empty": "No hi ha prediccions disponibles",
+    "updated": "Actualitzat:",
+    "preview": "Veure detalls",
+    "forecastAvailable": "Predicció disponible"
+  },
+  "settings": {
+    "title": "Configuració",
+    "subtitle": "Configuració de l'aplicació",
+    "language": {
+      "title": "Idioma",
+      "label": "Idioma de l'aplicació"
+    },
+    "zone": {
+      "title": "Zona Favorita",
+      "label": "Zona per defecte",
+      "none": "Cap",
+      "aragon": "Pirineu Aragonès",
+      "navarre": "Pirineu Navarrès",
+      "catalonia": "Pirineu Català"
+    },
+    "updates": {
+      "title": "Actualització",
+      "auto": "Actualització automàtica",
+      "autoDescription": "Actualitzar dades automàticament quan estiguin disponibles",
+      "interval": "Interval d'actualització",
+      "intervals": {
+        "15": "15 minuts",
+        "30": "30 minuts",
+        "60": "1 hora",
+        "120": "2 hores"
+      }
+    },
+    "data": {
+      "title": "Dades",
+      "clear": "Netejar dades fora de línia",
+      "clearDescription": "Elimina totes les dades guardades localment",
+      "confirmClear": "Estàs segur que vols eliminar totes les dades fora de línia?",
+      "cleared": "Dades fora de línia eliminades correctament",
+      "clearError": "Error en eliminar les dades fora de línia"
+    },
+    "info": {
+      "title": "Informació",
+      "version": "Versió:",
+      "lastUpdate": "Última actualització:",
+      "connection": "Estat de la connexió:",
+      "online": "En línia",
+      "offline": "Fora de línia"
+    }
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English",
+    "fr": "Français",
+    "ca": "Català",
+    "eu": "Euskera"
+  },
+  "common": {
+    "loading": "Carregant...",
+    "error": "Error",
+    "retry": "Tornar a intentar",
+    "save": "Desar",
+    "cancel": "Cancel·lar",
+    "ok": "D'acord",
+    "yes": "Sí",
+    "no": "No"
+  }
+}

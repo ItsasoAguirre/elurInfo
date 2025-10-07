@@ -42,7 +42,7 @@ export interface TabItem {
 }
 
 export interface AppSettings {
-  language: 'es' | 'ca' | 'eu'
+  language: 'es' | 'en' | 'fr' | 'ca' | 'eu'
   favoriteZone: string
   autoRefresh: boolean
   refreshInterval: number

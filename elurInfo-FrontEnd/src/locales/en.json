@@ -1,0 +1,94 @@
+{
+  "app": {
+    "offline": "📶 Offline mode - Showing saved data",
+    "title": "ElurInfo"
+  },
+  "navigation": {
+    "map": "Map",
+    "stations": "Stations",
+    "settings": "Settings"
+  },
+  "map": {
+    "title": "Avalanche Map",
+    "subtitle": "Pyrenees range",
+    "legend": {
+      "risk1": "Risk 1 - Low",
+      "risk2": "Risk 2 - Limited",
+      "risk3": "Risk 3 - Considerable",
+      "risk4": "Risk 4 - High",
+      "risk5": "Risk 5 - Very High"
+    }
+  },
+  "stations": {
+    "title": "Stations",
+    "subtitle": "Mountain forecasts",
+    "loading": "Loading forecasts...",
+    "error": "Error loading forecasts",
+    "retry": "Retry",
+    "empty": "No forecasts available",
+    "updated": "Updated:",
+    "preview": "View details",
+    "forecastAvailable": "Forecast available"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Application configuration",
+    "language": {
+      "title": "Language",
+      "label": "Application language"
+    },
+    "zone": {
+      "title": "Favorite Zone",
+      "label": "Default zone",
+      "none": "None",
+      "aragon": "Aragonese Pyrenees",
+      "navarre": "Navarrese Pyrenees",
+      "catalonia": "Catalan Pyrenees"
+    },
+    "updates": {
+      "title": "Updates",
+      "auto": "Automatic updates",
+      "autoDescription": "Automatically update data when available",
+      "interval": "Update interval",
+      "intervals": {
+        "15": "15 minutes",
+        "30": "30 minutes",
+        "60": "1 hour",
+        "120": "2 hours"
+      }
+    },
+    "data": {
+      "title": "Data",
+      "clear": "Clear offline data",
+      "clearDescription": "Remove all locally stored data",
+      "confirmClear": "Are you sure you want to delete all offline data?",
+      "cleared": "Offline data cleared successfully",
+      "clearError": "Error clearing offline data"
+    },
+    "info": {
+      "title": "Information",
+      "version": "Version:",
+      "lastUpdate": "Last update:",
+      "connection": "Connection status:",
+      "online": "Online",
+      "offline": "Offline"
+    }
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English",
+    "fr": "Français",
+    "ca": "Català",
+    "eu": "Euskera"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No"
+  }
+}

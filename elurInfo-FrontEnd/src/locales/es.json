@@ -1,0 +1,94 @@
+{
+  "app": {
+    "offline": "📶 Modo offline - Mostrando datos guardados",
+    "title": "ElurInfo"
+  },
+  "navigation": {
+    "map": "Mapa",
+    "stations": "Estaciones",
+    "settings": "Ajustes"
+  },
+  "map": {
+    "title": "Mapa de Avalanchas",
+    "subtitle": "Cordillera pirenaica",
+    "legend": {
+      "risk1": "Riesgo 1 - Débil",
+      "risk2": "Riesgo 2 - Limitado", 
+      "risk3": "Riesgo 3 - Notable",
+      "risk4": "Riesgo 4 - Fuerte",
+      "risk5": "Riesgo 5 - Muy fuerte"
+    }
+  },
+  "stations": {
+    "title": "Estaciones",
+    "subtitle": "Predicciones de montaña",
+    "loading": "Cargando predicciones...",
+    "error": "Error al cargar las predicciones",
+    "retry": "Reintentar",
+    "empty": "No hay predicciones disponibles",
+    "updated": "Actualizado:",
+    "preview": "Ver detalles",
+    "forecastAvailable": "Predicción disponible"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "subtitle": "Configuración de la aplicación",
+    "language": {
+      "title": "Idioma",
+      "label": "Idioma de la aplicación"
+    },
+    "zone": {
+      "title": "Zona Favorita",
+      "label": "Zona predeterminada",
+      "none": "Ninguna",
+      "aragon": "Pirineo Aragonés",
+      "navarre": "Pirineo Navarro",
+      "catalonia": "Pirineo Catalán"
+    },
+    "updates": {
+      "title": "Actualización",
+      "auto": "Actualización automática",
+      "autoDescription": "Actualizar datos automáticamente cuando esté disponible",
+      "interval": "Intervalo de actualización",
+      "intervals": {
+        "15": "15 minutos",
+        "30": "30 minutos", 
+        "60": "1 hora",
+        "120": "2 horas"
+      }
+    },
+    "data": {
+      "title": "Datos",
+      "clear": "Limpiar datos offline",
+      "clearDescription": "Elimina todos los datos guardados localmente",
+      "confirmClear": "¿Estás seguro de que quieres eliminar todos los datos offline?",
+      "cleared": "Datos offline eliminados correctamente",
+      "clearError": "Error al eliminar los datos offline"
+    },
+    "info": {
+      "title": "Información",
+      "version": "Versión:",
+      "lastUpdate": "Última actualización:",
+      "connection": "Estado de conexión:",
+      "online": "En línea",
+      "offline": "Sin conexión"
+    }
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English",
+    "fr": "Français",
+    "ca": "Català",
+    "eu": "Euskera"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "retry": "Reintentar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "ok": "Aceptar",
+    "yes": "Sí",
+    "no": "No"
+  }
+}
