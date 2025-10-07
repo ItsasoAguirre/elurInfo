@@ -65,9 +65,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useMountainForecasts } from '../composables/useMountainForecasts'
-import type { MountainForecast } from '../types'
 
 const { 
   forecasts, 
@@ -112,55 +111,86 @@ const getPreviewText = (forecastJson: string): string => {
 <style scoped>
 .stations-page {
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "header"
+    "content";
   position: relative;
+  background: var(--color-background-alt);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .page-header {
-  padding: 16px;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
+  grid-area: header;
+  padding: var(--spacing-lg);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: var(--spacing-xs);
 }
 
 .page-header h1 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 4px;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
 }
 
 .subtitle {
-  font-size: 14px;
-  color: #666;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
 }
 
 .stations-content {
-  flex: 1;
+  grid-area: content;
   overflow-y: auto;
-  padding: 16px;
+  overflow-x: hidden;
+  padding: var(--spacing-lg);
+  /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent bounce scrolling */
+  overscroll-behavior-y: contain;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .loading-state,
 .error-state,
 .empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
+  display: grid;
+  place-items: center;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "icon"
+    "text"
+    "action";
+  gap: var(--spacing-lg);
+  min-height: 200px;
   text-align: center;
-  color: #666;
+  color: var(--color-text-secondary);
+  padding: var(--spacing-xl);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .spinner {
+  grid-area: icon;
   width: 32px;
   height: 32px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #2196f3;
+  border: 3px solid var(--color-border-light);
+  border-top: 3px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 16px;
+  justify-self: center;
 }
 
 @keyframes spin {
@@ -170,105 +200,193 @@ const getPreviewText = (forecastJson: string): string => {
 
 .error-icon,
 .empty-icon {
+  grid-area: icon;
   font-size: 48px;
-  margin-bottom: 16px;
+  opacity: 0.7;
+  justify-self: center;
 }
 
-.retry-button {
-  margin-top: 16px;
-  padding: 8px 16px;
-  background: #2196f3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.retry-button:hover {
-  background: #1976d2;
-}
-
-.forecasts-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.forecast-card {
-  background: white;
-  border-radius: 8px;
-  padding: 16px;
-  border: 1px solid #e0e0e0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.forecast-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transform: translateY(-1px);
-}
-
-.forecast-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  margin-bottom: 8px;
-}
-
-.forecast-header h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
+.loading-state p,
+.error-state p,
+.empty-state p {
+  grid-area: text;
   margin: 0;
 }
 
+.retry-button {
+  grid-area: action;
+  padding: var(--spacing-sm) var(--spacing-xl);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-base);
+  touch-action: manipulation;
+  min-height: 44px;
+  justify-self: center;
+}
+
+.retry-button:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.retry-button:active {
+  transform: translateY(0);
+}
+
+.forecasts-list {
+  display: grid;
+  gap: var(--spacing-lg);
+  /* Responsive grid */
+  grid-template-columns: 1fr;
+  width: 100%;
+  max-width: 100%;
+}
+
+.forecast-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "header"
+    "preview"
+    "meta";
+  gap: var(--spacing-sm);
+}
+
+.forecast-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--color-primary);
+  transform: scaleY(0);
+  transition: transform var(--transition-base);
+  transform-origin: bottom;
+}
+
+.forecast-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  border-color: var(--color-primary-light);
+}
+
+.forecast-card:hover::before {
+  transform: scaleY(1);
+}
+
+.forecast-card:active {
+  transform: translateY(0);
+}
+
+.forecast-header {
+  grid-area: header;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "title date";
+  align-items: start;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.forecast-header h3 {
+  grid-area: title;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
+  min-width: 0; /* Allow text truncation */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .forecast-date {
-  font-size: 12px;
-  color: #666;
-  background: #f5f5f5;
-  padding: 4px 8px;
-  border-radius: 4px;
+  grid-area: date;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  background: var(--color-background-alt);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  font-weight: var(--font-weight-medium);
+  justify-self: end;
 }
 
 .forecast-preview {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.4;
-  margin-bottom: 12px;
+  grid-area: preview;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .forecast-meta {
-  font-size: 12px;
-  color: #999;
+  grid-area: meta;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-disabled);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.update-time::before {
+  content: '🕒';
+  margin-right: var(--spacing-xs);
 }
 
 .refresh-button {
   position: fixed;
-  bottom: 80px;
-  right: 16px;
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  right: var(--spacing-lg);
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #2196f3;
+  background: var(--color-primary);
   color: white;
   border: none;
-  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+  box-shadow: var(--shadow-xl);
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   font-size: 20px;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
+  z-index: var(--z-fixed);
+  touch-action: manipulation;
 }
 
-.refresh-button:hover {
-  background: #1976d2;
+.refresh-button:hover:not(:disabled) {
+  background: var(--color-primary-dark);
   transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+}
+
+.refresh-button:active {
+  transform: scale(0.95);
 }
 
 .refresh-button:disabled {
@@ -281,25 +399,95 @@ const getPreviewText = (forecastJson: string): string => {
   animation: spin 1s linear infinite;
 }
 
-@media (max-width: 480px) {
-  .page-header {
-    padding: 12px;
-  }
-  
-  .page-header h1 {
-    font-size: 20px;
+/* Responsive breakpoints */
+@media (min-width: 768px) {
+  .forecasts-list {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   }
   
   .stations-content {
-    padding: 12px;
+    padding: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .page-header h1 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .subtitle {
+    font-size: var(--font-size-xs);
+  }
+  
+  .stations-content {
+    padding: var(--spacing-md);
   }
   
   .forecast-card {
-    padding: 12px;
+    padding: var(--spacing-md);
+  }
+  
+  .forecast-header {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "title"
+      "date";
+    gap: var(--spacing-sm);
+  }
+  
+  .forecast-date {
+    justify-self: end;
   }
   
   .refresh-button {
-    bottom: 70px;
+    bottom: calc(70px + env(safe-area-inset-bottom));
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 360px) {
+  .stations-content {
+    padding: var(--spacing-sm);
+  }
+  
+  .forecast-card {
+    padding: var(--spacing-sm);
+  }
+  
+  .forecast-header h3 {
+    font-size: var(--font-size-base);
+  }
+  
+  .refresh-button {
+    right: var(--spacing-md);
+  }
+}
+
+/* Landscape orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+  .page-header {
+    padding: var(--spacing-sm) var(--spacing-lg);
+  }
+  
+  .page-header h1 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .subtitle {
+    font-size: 11px;
+  }
+  
+  .loading-state,
+  .error-state,
+  .empty-state {
+    min-height: 150px;
+    padding: var(--spacing-lg);
   }
 }
 </style>

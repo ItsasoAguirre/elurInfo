@@ -8,101 +8,113 @@
     <div class="settings-content">
       <div class="settings-section">
         <h2>Idioma</h2>
-        <div class="setting-item">
-          <label for="language-select">Idioma de la aplicación</label>
-          <select 
-            id="language-select"
-            v-model="settings.language"
-            @change="saveSettings"
-            class="setting-select"
-          >
-            <option value="es">Español</option>
-            <option value="ca">Català</option>
-            <option value="eu">Euskera</option>
-          </select>
+        <div class="settings-section-content">
+          <div class="setting-item">
+            <label for="language-select">Idioma de la aplicación</label>
+            <select 
+              id="language-select"
+              v-model="settings.language"
+              @change="saveSettings"
+              class="setting-select"
+            >
+              <option value="es">Español</option>
+              <option value="ca">Català</option>
+              <option value="eu">Euskera</option>
+            </select>
+          </div>
         </div>
       </div>
 
       <div class="settings-section">
         <h2>Zona Favorita</h2>
-        <div class="setting-item">
-          <label for="zone-select">Zona predeterminada</label>
-          <select 
-            id="zone-select"
-            v-model="settings.favoriteZone"
-            @change="saveSettings"
-            class="setting-select"
-          >
-            <option value="">Ninguna</option>
-            <option value="pirineo-aragones">Pirineo Aragonés</option>
-            <option value="pirineo-navarro">Pirineo Navarro</option>
-            <option value="pirineo-catalan">Pirineo Catalán</option>
-          </select>
+        <div class="settings-section-content">
+          <div class="setting-item">
+            <label for="zone-select">Zona predeterminada</label>
+            <select 
+              id="zone-select"
+              v-model="settings.favoriteZone"
+              @change="saveSettings"
+              class="setting-select"
+            >
+              <option value="">Ninguna</option>
+              <option value="pirineo-aragones">Pirineo Aragonés</option>
+              <option value="pirineo-navarro">Pirineo Navarro</option>
+              <option value="pirineo-catalan">Pirineo Catalán</option>
+            </select>
+          </div>
         </div>
       </div>
 
       <div class="settings-section">
         <h2>Actualización</h2>
-        <div class="setting-item">
-          <div class="setting-toggle">
-            <label for="auto-refresh">Actualización automática</label>
-            <input 
-              id="auto-refresh"
-              type="checkbox" 
-              v-model="settings.autoRefresh"
-              @change="saveSettings"
-              class="toggle-input"
-            />
-            <span class="toggle-slider"></span>
+        <div class="settings-section-content">
+          <div class="setting-item">
+            <div class="setting-toggle">
+              <label for="auto-refresh">Actualización automática</label>
+              <input 
+                id="auto-refresh"
+                type="checkbox" 
+                v-model="settings.autoRefresh"
+                @change="saveSettings"
+                class="toggle-input"
+              />
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-description">
+              Actualizar datos automáticamente cuando esté disponible
+            </p>
           </div>
-          <p class="setting-description">
-            Actualizar datos automáticamente cuando esté disponible
-          </p>
-        </div>
-        
-        <div v-if="settings.autoRefresh" class="setting-item">
-          <label for="refresh-interval">Intervalo de actualización</label>
-          <select 
-            id="refresh-interval"
-            v-model="settings.refreshInterval"
-            @change="saveSettings"
-            class="setting-select"
-          >
-            <option :value="15">15 minutos</option>
-            <option :value="30">30 minutos</option>
-            <option :value="60">1 hora</option>
-            <option :value="120">2 horas</option>
-          </select>
+          
+          <div v-if="settings.autoRefresh" class="setting-item">
+            <label for="refresh-interval">Intervalo de actualización</label>
+            <select 
+              id="refresh-interval"
+              v-model="settings.refreshInterval"
+              @change="saveSettings"
+              class="setting-select"
+            >
+              <option :value="15">15 minutos</option>
+              <option :value="30">30 minutos</option>
+              <option :value="60">1 hora</option>
+              <option :value="120">2 horas</option>
+            </select>
+          </div>
         </div>
       </div>
 
       <div class="settings-section">
         <h2>Datos</h2>
-        <div class="setting-item">
-          <button @click="clearOfflineData" class="danger-button">
-            Limpiar datos offline
-          </button>
-          <p class="setting-description">
-            Elimina todos los datos guardados localmente
-          </p>
+        <div class="settings-section-content">
+          <div class="setting-item">
+            <button @click="clearOfflineData" class="danger-button">
+              Limpiar datos offline
+            </button>
+            <p class="setting-description">
+              Elimina todos los datos guardados localmente
+            </p>
+          </div>
         </div>
       </div>
 
       <div class="settings-section">
         <h2>Información</h2>
-        <div class="info-item">
-          <span class="info-label">Versión:</span>
-          <span class="info-value">1.0.0</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">Última actualización:</span>
-          <span class="info-value">{{ lastUpdate }}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">Estado de conexión:</span>
-          <span class="info-value" :class="connectionClass">
-            {{ connectionStatus }}
-          </span>
+        <div class="settings-section-content">
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-label">Versión:</span>
+              <span class="info-value">1.0.0</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Última actualización:</span>
+              <span class="info-value">{{ lastUpdate }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Estado de conexión:</span>
+              <span class="info-value" :class="connectionClass">
+                {{ isOnline() ? 'En línea' : 'Sin conexión' }}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -116,7 +128,7 @@ import { useNetwork } from '../composables/useNetwork'
 import { offlineService } from '../services/offline.service'
 
 const { settings, saveSettings, loadSettings } = useSettings()
-const { connectionStatus, isOnline } = useNetwork()
+const { isOnline } = useNetwork()
 
 const lastUpdate = computed(() => {
   // TODO: Get real last update time from stored data
@@ -125,10 +137,6 @@ const lastUpdate = computed(() => {
 
 const connectionClass = computed(() => {
   return isOnline() ? 'status-online' : 'status-offline'
-})
-
-const connectionStatusText = computed(() => {
-  return isOnline() ? 'En línea' : 'Sin conexión'
 })
 
 const clearOfflineData = async () => {
@@ -150,98 +158,168 @@ loadSettings()
 <style scoped>
 .settings-page {
   height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "header"
+    "content";
   overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--color-background-alt);
+  /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
 .page-header {
-  padding: 16px;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
+  grid-area: header;
+  padding: var(--spacing-lg);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: var(--spacing-xs);
 }
 
 .page-header h1 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 4px;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
 }
 
 .subtitle {
-  font-size: 14px;
-  color: #666;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
 }
 
 .settings-content {
-  padding: 16px;
+  grid-area: content;
+  padding: var(--spacing-lg);
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+  align-content: start;
 }
 
 .settings-section {
-  background: white;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  border: 1px solid #e0e0e0;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--spacing-lg);
 }
 
 .settings-section h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 16px;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.settings-section h2::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+
+.settings-section-content {
+  display: grid;
+  gap: var(--spacing-xl);
 }
 
 .setting-item {
-  margin-bottom: 16px;
-}
-
-.setting-item:last-child {
-  margin-bottom: 0;
+  width: 100%;
+  display: grid;
+  gap: var(--spacing-sm);
 }
 
 .setting-item label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 8px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-base);
+  margin: 0;
 }
 
 .setting-select {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  background: white;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  transition: all var(--transition-base);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--spacing-md) center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;
+  min-height: 44px;
+  box-sizing: border-box;
 }
 
 .setting-select:focus {
   outline: none;
-  border-color: #2196f3;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
 }
 
 .setting-toggle {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "label toggle";
   align-items: center;
-  justify-content: space-between;
-  position: relative;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  min-height: 44px;
+  width: 100%;
+}
+
+.setting-toggle label {
+  grid-area: label;
 }
 
 .toggle-input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
+  width: 50px;
+  height: 28px;
 }
 
 .toggle-slider {
+  grid-area: toggle;
   width: 50px;
   height: 28px;
-  background: #ccc;
+  background: var(--color-border);
   border-radius: 14px;
   position: relative;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
 }
 
 .toggle-slider::before {
@@ -249,49 +327,77 @@ loadSettings()
   position: absolute;
   width: 20px;
   height: 20px;
-  background: white;
+  background: var(--color-surface);
   border-radius: 50%;
   top: 4px;
   left: 4px;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
 }
 
 .toggle-input:checked + .toggle-slider {
-  background: #2196f3;
+  background: var(--color-primary);
 }
 
 .toggle-input:checked + .toggle-slider::before {
   transform: translateX(22px);
 }
 
+.toggle-input:focus + .toggle-slider {
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
+
 .setting-description {
-  font-size: 12px;
-  color: #666;
-  margin-top: 4px;
-  line-height: 1.4;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base);
+  margin: 0;
 }
 
 .danger-button {
-  background: #f44336;
+  background: var(--color-error);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all var(--transition-base);
+  min-height: 44px;
+  touch-action: manipulation;
+  justify-self: start;
 }
 
-.danger-button:hover {
+.danger-button:hover:not(:disabled) {
   background: #d32f2f;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.danger-button:active {
+  transform: translateY(0);
+}
+
+.danger-button:focus-visible {
+  outline: 2px solid var(--color-error);
+  outline-offset: 2px;
+}
+
+.info-list {
+  display: grid;
+  gap: 0;
 }
 
 .info-item {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "label value";
   align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #f0f0f0;
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--color-border-light);
+  min-height: 48px;
+  gap: var(--spacing-md);
 }
 
 .info-item:last-child {
@@ -299,39 +405,113 @@ loadSettings()
 }
 
 .info-label {
-  font-size: 14px;
-  color: #666;
+  grid-area: label;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  min-width: 0;
 }
 
 .info-value {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  grid-area: value;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  text-align: right;
 }
 
 .status-online {
-  color: #4caf50;
+  color: var(--color-success);
 }
 
 .status-offline {
-  color: #f44336;
+  color: var(--color-error);
 }
 
+/* Responsive breakpoints */
 @media (max-width: 480px) {
   .page-header {
-    padding: 12px;
+    padding: var(--spacing-md) var(--spacing-lg);
   }
   
   .page-header h1 {
-    font-size: 20px;
+    font-size: var(--font-size-xl);
+  }
+  
+  .subtitle {
+    font-size: var(--font-size-xs);
   }
   
   .settings-content {
-    padding: 12px;
+    padding: var(--spacing-md);
   }
   
   .settings-section {
-    padding: 12px;
+    padding: var(--spacing-lg);
+  }
+  
+  .setting-toggle {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "label"
+      "toggle";
+    justify-items: start;
+    gap: var(--spacing-md);
+  }
+  
+  .toggle-slider {
+    justify-self: end;
+  }
+  
+  .info-item {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "label"
+      "value";
+    gap: var(--spacing-xs);
+    align-items: start;
+  }
+  
+  .info-value {
+    text-align: left;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 360px) {
+  .settings-content {
+    padding: var(--spacing-sm);
+  }
+  
+  .settings-section {
+    padding: var(--spacing-md);
+  }
+  
+  .settings-section h2 {
+    font-size: var(--font-size-base);
+  }
+}
+
+/* Landscape orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+  .page-header {
+    padding: var(--spacing-sm) var(--spacing-lg);
+  }
+  
+  .page-header h1 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .subtitle {
+    font-size: 11px;
+  }
+  
+  .settings-section {
+    padding: var(--spacing-lg);
+  }
+  
+  .settings-content {
+    gap: var(--spacing-md);
   }
 }
 </style>
