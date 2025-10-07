@@ -26,7 +26,7 @@ const logsDir = path.join(process.cwd(), 'logs')
 
 // Configure winston logger
 export const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env['LOG_LEVEL'] || 'info',
   levels: logLevels,
   format: winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
@@ -63,13 +63,13 @@ export const logger = winston.createLogger({
 })
 
 // Add console transport for development
-if (process.env.NODE_ENV !== 'production') {
+if (process.env['NODE_ENV'] !== 'production') {
   logger.add(new winston.transports.Console({
     format: winston.format.combine(
       winston.format.colorize({ all: true }),
       winston.format.timestamp({ format: 'HH:mm:ss' }),
       winston.format.printf(
-        (info) => `${info.timestamp} ${info.level}: ${info.message}`
+        (info) => `${info['timestamp']} ${info.level}: ${info.message}`
       )
     )
   }))

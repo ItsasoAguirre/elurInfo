@@ -27,7 +27,7 @@ export const errorHandler = (
   error: AppError,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void => {
   let { statusCode = 500, message } = error
 
@@ -55,14 +55,14 @@ export const errorHandler = (
   }
 
   // Don't leak error details in production
-  if (process.env.NODE_ENV === 'production' && !error.isOperational) {
+  if (process.env['NODE_ENV'] === 'production' && !error.isOperational) {
     message = 'Algo salió mal'
   }
 
   res.status(statusCode).json({
     error: true,
     message,
-    ...(process.env.NODE_ENV === 'development' && {
+    ...(process.env['NODE_ENV'] === 'development' && {
       stack: error.stack,
       details: error
     })
@@ -75,7 +75,7 @@ export const asyncHandler = (fn: Function) => {
   }
 }
 
-export const notFound = (req: Request, res: Response, next: NextFunction): void => {
+export const notFound = (req: Request, _res: Response, next: NextFunction): void => {
   const error = createError(`Recurso no encontrado - ${req.originalUrl}`, 404)
   next(error)
 }

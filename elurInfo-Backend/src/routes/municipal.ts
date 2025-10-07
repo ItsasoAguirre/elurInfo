@@ -25,7 +25,11 @@ router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params
 
   if (!id) {
-    throw createError('ID de municipio requerido', 400)
+    res.status(400).json({
+      success: false,
+      message: 'ID de municipio requerido'
+    })
+    return
   }
 
   // Validate municipality ID
@@ -40,7 +44,7 @@ router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
     }
 
     // Check for valid cached data (1 hour for municipal forecasts)
-    const validHours = parseInt(process.env.CACHE_MUNICIPAL_HOURS || '1')
+    const validHours = parseInt(process.env['CACHE_MUNICIPAL_HOURS'] || '1')
     
     const forecast = await models.municipalForecasts.findByMunicipalityId(id)
     
@@ -153,10 +157,16 @@ router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
       source: 'mock-data',
       message: 'Datos de prueba - Integración con AEMET pendiente'
     })
+    return
 
   } catch (error) {
     logger.error('Error fetching municipal forecast:', { municipalityId: id, error })
-    throw createError('Error al obtener predicción municipal', 500)
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener predicción municipal',
+      error: process.env['NODE_ENV'] === 'development' ? error : undefined
+    })
+    return
   }
 }))
 

@@ -1,10 +1,11 @@
 import localforage from 'localforage'
-import type { AvalancheReport, MountainForecast, MunicipalForecast } from '@/types'
+import type { AvalancheReport, MountainForecast, MunicipalForecast, SnowScienceReport } from '@/types'
 
 class OfflineService {
   private avalancheStore: LocalForage
   private mountainStore: LocalForage
   private municipalStore: LocalForage
+  private snowScienceStore: LocalForage
   private settingsStore: LocalForage
 
   constructor() {
@@ -22,6 +23,11 @@ class OfflineService {
     this.municipalStore = localforage.createInstance({
       name: 'elurInfo',
       storeName: 'municipal_forecasts'
+    })
+
+    this.snowScienceStore = localforage.createInstance({
+      name: 'elurInfo',
+      storeName: 'snow_science_reports'
     })
 
     this.settingsStore = localforage.createInstance({
@@ -69,6 +75,19 @@ class OfflineService {
     return await this.municipalStore.getItem(municipalityId)
   }
 
+  // Snow Science Reports
+  async saveSnowScienceReports(reports: SnowScienceReport[]): Promise<void> {
+    const timestamp = new Date().toISOString()
+    await this.snowScienceStore.setItem('reports', {
+      data: reports,
+      timestamp
+    })
+  }
+
+  async getSnowScienceReports(): Promise<{ data: SnowScienceReport[], timestamp: string } | null> {
+    return await this.snowScienceStore.getItem('reports')
+  }
+
   // Settings
   async saveSettings(settings: any): Promise<void> {
     await this.settingsStore.setItem('app_settings', settings)
@@ -83,7 +102,8 @@ class OfflineService {
     await Promise.all([
       this.avalancheStore.clear(),
       this.mountainStore.clear(),
-      this.municipalStore.clear()
+      this.municipalStore.clear(),
+      this.snowScienceStore.clear()
     ])
   }
 

@@ -89,6 +89,33 @@
     "cancel": "Cancelar",
     "ok": "Aceptar",
     "yes": "Sí",
-    "no": "No"
+    "no": "No",
+    "offline": "Mostrando datos offline del",
+    "noData": "No hay datos disponibles",
+    "errorLoading": "Error al cargar datos",
+    "errorRefreshing": "Error al actualizar datos"
+  },
+  "areas": {
+    "catalanPyrenees": "Pirineo Catalán",
+    "navarreAragonesePyrenees": "Pirineo Navarro y Aragonés",
+    "unknown": "Área desconocida"
+  },
+  "snowScience": {
+    "title": "Ciencia de la Nieve",
+    "subtitle": "Reportes nivológicos",
+    "dataAvailable": "Datos disponibles",
+    "noDescription": "Sin descripción disponible",
+    "loading": "Cargando reportes nivológicos...",
+    "error": "Error al cargar reportes",
+    "retry": "Reintentar",
+    "empty": "No hay reportes disponibles",
+    "updated": "Actualizado:",
+    "elaborated": "Elaborado:",
+    "valid": "Válido:",
+    "refresh": "Actualizar datos",
+    "refreshArea": "Actualizar área",
+    "dataFresh": "Datos actualizados",
+    "dataStale": "Datos desactualizados",
+    "viewDetails": "Ver detalles"
   }
 }

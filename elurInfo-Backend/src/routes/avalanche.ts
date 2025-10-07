@@ -6,7 +6,7 @@ import { models } from '../models'
 const router = Router()
 
 // GET /avalancha - Obtener boletín de avalanchas
-router.get('/', asyncHandler(async (req: Request, res: Response) => {
+router.get('/', asyncHandler(async (_req: Request, res: Response) => {
   try {
     // Ensure models are initialized
     if (!models.isInitialized()) {
@@ -14,7 +14,7 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
     }
 
     // Check if we have valid cached data (24 hours for avalanche reports)
-    const validHours = parseInt(process.env.CACHE_AVALANCHE_HOURS || '24')
+    const validHours = parseInt(process.env['CACHE_AVALANCHE_HOURS'] || '24')
     
     // Get all latest avalanche reports from database
     const reports = await models.avalancheReports.findLatest(50)
@@ -74,10 +74,16 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
       source: 'mock-data',
       message: 'Datos de prueba - Integración con AEMET pendiente'
     })
+    return
 
   } catch (error) {
     logger.error('Error fetching avalanche reports:', error)
-    throw createError('Error al obtener boletín de avalanchas', 500)
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener boletín de avalanchas',
+      error: process.env['NODE_ENV'] === 'development' ? error : undefined
+    })
+    return
   }
 }))
 
@@ -101,7 +107,7 @@ router.get('/zone/:zone', asyncHandler(async (req: Request, res: Response) => {
     }
 
     // Check if data is still valid (24 hours)
-    const validHours = parseInt(process.env.CACHE_AVALANCHE_HOURS || '24')
+    const validHours = parseInt(process.env['CACHE_AVALANCHE_HOURS'] || '24')
     const cutoffTime = new Date(Date.now() - validHours * 60 * 60 * 1000)
     const isValid = new Date(report.last_update) > cutoffTime
 
@@ -133,10 +139,23 @@ router.get('/zone/:zone', asyncHandler(async (req: Request, res: Response) => {
 // GET /avalancha/risk/:level - Obtener zonas por nivel de riesgo
 router.get('/risk/:level', asyncHandler(async (req: Request, res: Response) => {
   const { level } = req.params
+  
+  if (!level) {
+    res.status(400).json({
+      success: false,
+      message: 'Nivel de riesgo requerido'
+    })
+    return
+  }
+  
   const riskLevel = parseInt(level)
 
   if (isNaN(riskLevel) || riskLevel < 1 || riskLevel > 5) {
-    throw createError('Nivel de riesgo debe ser un número entre 1 y 5', 400)
+    res.status(400).json({
+      success: false,
+      message: 'Nivel de riesgo debe ser un número entre 1 y 5'
+    })
+    return
   }
 
   try {
@@ -166,7 +185,7 @@ router.get('/risk/:level', asyncHandler(async (req: Request, res: Response) => {
 }))
 
 // GET /avalancha/stats - Obtener estadísticas de zonas
-router.get('/stats', asyncHandler(async (req: Request, res: Response) => {
+router.get('/stats', asyncHandler(async (_req: Request, res: Response) => {
   try {
     if (!models.isInitialized()) {
       await models.initialize()

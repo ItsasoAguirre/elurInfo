@@ -1,4 +1,10 @@
-import type { AvalancheReport, MountainForecast, MunicipalForecast } from '../types'
+import type { 
+  AvalancheReport, 
+  MountainForecast, 
+  MunicipalForecast, 
+  SnowScienceReport, 
+  ApiResponse 
+} from '../types'
 
 class ApiService {
   private baseUrl: string
@@ -33,6 +39,35 @@ class ApiService {
 
   async getMunicipalForecast(municipalityId: string): Promise<MunicipalForecast> {
     return this.fetchWithError<MunicipalForecast>(`/municipio/${municipalityId}`)
+  }
+
+  // Snow Science endpoints
+  async getSnowScienceReports(): Promise<SnowScienceReport[]> {
+    const response = await this.fetchWithError<ApiResponse<SnowScienceReport[]>>('/snow-science')
+    return response.data
+  }
+
+  async getSnowScienceReportByArea(areaCode: number): Promise<SnowScienceReport> {
+    const response = await this.fetchWithError<ApiResponse<SnowScienceReport>>(`/snow-science/${areaCode}`)
+    return response.data
+  }
+
+  async refreshSnowScienceData(areaCode?: number): Promise<SnowScienceReport[]> {
+    const body = areaCode !== undefined ? { area: areaCode } : {}
+    const response = await fetch(`${this.baseUrl}/snow-science/refresh`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    })
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    
+    const result = await response.json()
+    return result.data
   }
 
   // Check if the API is reachable

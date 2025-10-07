@@ -18,7 +18,7 @@ class DatabaseManager {
   private dbPath: string
 
   constructor() {
-    this.dbPath = process.env.DATABASE_PATH || path.join(process.cwd(), 'data', 'elurinfo.db')
+    this.dbPath = process.env['DATABASE_PATH'] || path.join(process.cwd(), 'data', 'elurinfo.db')
     this.ensureDataDirectory()
   }
 
@@ -114,7 +114,7 @@ class DatabaseManager {
               logger.error('Error getting row:', { sql, params, error })
               reject(error)
             } else {
-              resolve(row)
+              resolve(row as T | undefined)
             }
           })
         })
@@ -127,7 +127,7 @@ class DatabaseManager {
               logger.error('Error getting rows:', { sql, params, error })
               reject(error)
             } else {
-              resolve(rows || [])
+              resolve((rows || []) as T[])
             }
           })
         })
@@ -153,7 +153,7 @@ class DatabaseManager {
       throw new Error('Database not connected')
     }
 
-    const backupDir = process.env.DATABASE_BACKUP_PATH || path.join(process.cwd(), 'data', 'backups')
+    const backupDir = process.env['DATABASE_BACKUP_PATH'] || path.join(process.cwd(), 'data', 'backups')
     
     if (!fs.existsSync(backupDir)) {
       fs.mkdirSync(backupDir, { recursive: true })
@@ -163,19 +163,15 @@ class DatabaseManager {
     const backupPath = path.join(backupDir, `backup-${timestamp}.db`)
 
     return new Promise((resolve, reject) => {
-      const backup = new sqlite3.Database(backupPath)
-      
-      this.database!.backup(backup, (error) => {
-        backup.close()
-        
-        if (error) {
-          logger.error('Backup failed:', error)
-          reject(error)
-        } else {
-          logger.info(`Database backed up to: ${backupPath}`)
-          resolve(backupPath)
-        }
-      })
+      try {
+        // Simple file copy backup since sqlite3.backup method may not be available
+        fs.copyFileSync(this.dbPath, backupPath)
+        logger.info(`Database backed up to: ${backupPath}`)
+        resolve(backupPath)
+      } catch (error) {
+        logger.error('Backup failed:', error)
+        reject(error)
+      }
     })
   }
 

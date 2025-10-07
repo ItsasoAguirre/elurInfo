@@ -10,8 +10,8 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
     status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development',
-    version: process.env.npm_package_version || '1.0.0',
+    environment: process.env['NODE_ENV'] || 'development',
+    version: process.env['npm_package_version'] || '1.0.0',
     database: 'connected', // TODO: Add actual database health check
     memory: {
       used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024 * 100) / 100,
@@ -24,7 +24,7 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
 }))
 
 // Readiness probe
-router.get('/ready', asyncHandler(async (req: Request, res: Response) => {
+router.get('/ready', asyncHandler(async (_req: Request, res: Response) => {
   // Check if all required services are available
   const checks = {
     database: true, // TODO: Add actual database connectivity check
@@ -43,7 +43,7 @@ router.get('/ready', asyncHandler(async (req: Request, res: Response) => {
 }))
 
 // Liveness probe
-router.get('/live', asyncHandler(async (req: Request, res: Response) => {
+router.get('/live', asyncHandler(async (_req: Request, res: Response) => {
   res.json({
     status: 'ALIVE',
     timestamp: new Date().toISOString(),
