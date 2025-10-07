@@ -4,8 +4,9 @@
   "description": "Backend API para información de avalanchas en el Pirineo",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/index.js",
-    "dev": "tsx src/index.ts",
+    "start": "tsx src/index.ts",
+    "start:prod": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "migrate": "node dist/migrations/migrate.js",

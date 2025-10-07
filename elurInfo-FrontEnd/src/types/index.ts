@@ -33,6 +33,27 @@ export interface ApiCacheEntry {
   last_update: string
 }
 
+// Snow Science Types
+export interface SnowScienceReport {
+  id: number
+  area: string
+  areaCode: number
+  fechaElaboracion: string
+  fechaValidez: string
+  datosCompletos: string
+  fechaCreacion: string
+  fechaActualizacion: string
+}
+
+export interface ApiResponse<T> {
+  success: boolean
+  data: T
+  timestamp: string
+  cached?: boolean
+  count?: number
+  message?: string
+}
+
 // UI Types
 export interface TabItem {
   id: string

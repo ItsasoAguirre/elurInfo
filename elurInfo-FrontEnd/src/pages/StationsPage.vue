@@ -1,61 +1,87 @@
 <template>
   <div class="stations-page">
     <div class="page-header">
-      <h1>{{ t('stations.title') }}</h1>
-      <p class="subtitle">{{ t('stations.subtitle') }}</p>
+      <h1>{{ t('snowScience.title') }}</h1>
+      <p class="subtitle">{{ t('snowScience.subtitle') }}</p>
     </div>
     
     <div class="stations-content">
       <!-- Loading state -->
       <div v-if="loading" class="loading-state">
         <div class="spinner"></div>
-        <p>{{ t('stations.loading') }}</p>
+        <p>{{ t('snowScience.loading') }}</p>
       </div>
       
       <!-- Error state -->
       <div v-else-if="error" class="error-state">
         <span class="error-icon">⚠️</span>
         <p>{{ error }}</p>
-        <button @click="loadForecasts" class="retry-button">
-          {{ t('stations.retry') }}
+        <button @click="loadReports" class="retry-button">
+          {{ t('snowScience.retry') }}
         </button>
       </div>
       
-      <!-- Forecasts list -->
-      <div v-else class="forecasts-list">
+      <!-- Reports list -->
+      <div v-else class="reports-list">
         <div
-          v-for="forecast in forecasts"
-          :key="forecast.id"
-          class="forecast-card"
-          @click="selectForecast(forecast)"
+          v-for="report in reports"
+          :key="report.id"
+          class="report-card"
+          @click="selectReport(report)"
         >
-          <div class="forecast-header">
-            <h3>{{ forecast.zone }}</h3>
-            <span class="forecast-date">{{ formatDate(forecast.valid_date) }}</span>
+          <div class="report-header">
+            <h3>{{ getAreaName(report.areaCode) }}</h3>
+            <div class="report-meta">
+              <span class="area-code">{{ report.areaCode === 0 ? 'PCT' : 'PNA' }}</span>
+              <span 
+                class="freshness-indicator" 
+                :class="{ fresh: isDataFresh(report), stale: !isDataFresh(report) }"
+              >
+                {{ isDataFresh(report) ? '🟢' : '🟡' }}
+              </span>
+            </div>
           </div>
           
-          <div class="forecast-preview">
-            {{ getPreviewText(forecast.forecast_json) }}
+          <div class="report-dates">
+            <div class="date-item">
+              <span class="date-label">{{ t('snowScience.elaborated') }}</span>
+              <span class="date-value">{{ formatDate(report.fechaElaboracion) }}</span>
+            </div>
+            <div class="date-item">
+              <span class="date-label">{{ t('snowScience.valid') }}</span>
+              <span class="date-value">{{ formatDate(report.fechaValidez) }}</span>
+            </div>
           </div>
           
-          <div class="forecast-meta">
+          <div class="report-preview">
+            {{ getPreviewText(report) }}
+          </div>
+          
+          <div class="report-footer">
             <span class="update-time">
-              {{ t('stations.updated') }} {{ formatTime(forecast.last_update) }}
+              {{ t('snowScience.updated') }} {{ formatTime(report.fechaActualizacion) }}
             </span>
+            <button 
+              @click.stop="refreshArea(report.areaCode)" 
+              class="mini-refresh-btn"
+              :disabled="loading"
+            >
+              🔄
+            </button>
           </div>
         </div>
       </div>
       
       <!-- Empty state -->
-      <div v-if="!loading && !error && forecasts.length === 0" class="empty-state">
-        <span class="empty-icon">🏔️</span>
-        <p>{{ t('stations.empty') }}</p>
+      <div v-if="!loading && !error && reports.length === 0" class="empty-state">
+        <span class="empty-icon">❄️</span>
+        <p>{{ t('snowScience.empty') }}</p>
       </div>
     </div>
     
     <!-- Floating refresh button -->
     <button 
-      @click="loadForecasts" 
+      @click="refreshAllData" 
       class="refresh-button"
       :disabled="loading"
     >
@@ -66,22 +92,34 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useMountainForecasts } from '../composables/useMountainForecasts'
+import { useSnowScienceData } from '../composables/useSnowScienceData'
 import { useLanguage } from '../composables/useLanguage'
 
 const { 
-  forecasts, 
+  reports, 
   loading, 
   error, 
-  loadForecasts,
-  selectForecast 
-} = useMountainForecasts()
+  loadReports,
+  refreshData,
+  selectReport,
+  getAreaName,
+  getFormattedData,
+  isDataFresh
+} = useSnowScienceData()
 
 const { t, currentLanguage } = useLanguage()
 
 onMounted(() => {
-  loadForecasts()
+  loadReports()
 })
+
+const refreshAllData = async () => {
+  await refreshData()
+}
+
+const refreshArea = async (areaCode: number) => {
+  await refreshData(areaCode)
+}
 
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString)
@@ -110,14 +148,17 @@ const formatTime = (dateString: string): string => {
   })
 }
 
-const getPreviewText = (forecastJson: string): string => {
-  try {
-    const data = JSON.parse(forecastJson)
-    // Extract relevant preview information
-    return data.descripcion || data.resumen || t('stations.forecastAvailable')
-  } catch {
-    return t('stations.preview')
+const getPreviewText = (report: any): string => {
+  const formattedData = getFormattedData(report)
+  
+  if (typeof formattedData === 'object') {
+    return formattedData.resumen || 
+           formattedData.descripcion || 
+           formattedData.condiciones ||
+           t('snowScience.dataAvailable')
   }
+  
+  return String(formattedData).substring(0, 150) + '...'
 }
 </script>
 
@@ -251,7 +292,7 @@ const getPreviewText = (forecastJson: string): string => {
   transform: translateY(0);
 }
 
-.forecasts-list {
+.reports-list {
   display: grid;
   gap: var(--spacing-lg);
   /* Responsive grid */
@@ -260,7 +301,7 @@ const getPreviewText = (forecastJson: string): string => {
   max-width: 100%;
 }
 
-.forecast-card {
+.report-card {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
@@ -273,15 +314,16 @@ const getPreviewText = (forecastJson: string): string => {
   width: 100%;
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto auto auto;
   grid-template-areas:
     "header"
+    "dates"
     "preview"
-    "meta";
+    "footer";
   gap: var(--spacing-sm);
 }
 
-.forecast-card::before {
+.report-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -294,44 +336,50 @@ const getPreviewText = (forecastJson: string): string => {
   transform-origin: bottom;
 }
 
-.forecast-card:hover {
+.report-card:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
   border-color: var(--color-primary-light);
 }
 
-.forecast-card:hover::before {
+.report-card:hover::before {
   transform: scaleY(1);
 }
 
-.forecast-card:active {
+.report-card:active {
   transform: translateY(0);
 }
 
-.forecast-header {
+.report-header {
   grid-area: header;
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-template-areas: "title date";
+  grid-template-areas: "title meta";
   align-items: start;
   gap: var(--spacing-md);
   width: 100%;
 }
 
-.forecast-header h3 {
+.report-header h3 {
   grid-area: title;
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
   margin: 0;
   line-height: var(--line-height-tight);
-  min-width: 0; /* Allow text truncation */
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.forecast-date {
-  grid-area: date;
+.report-meta {
+  grid-area: meta;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.area-code {
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
   background: var(--color-background-alt);
@@ -339,10 +387,46 @@ const getPreviewText = (forecastJson: string): string => {
   border-radius: var(--radius-sm);
   white-space: nowrap;
   font-weight: var(--font-weight-medium);
-  justify-self: end;
 }
 
-.forecast-preview {
+.freshness-indicator {
+  font-size: 12px;
+}
+
+.freshness-indicator.fresh {
+  opacity: 1;
+}
+
+.freshness-indicator.stale {
+  opacity: 0.7;
+}
+
+.report-dates {
+  grid-area: dates;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.date-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.date-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.date-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.report-preview {
   grid-area: preview;
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
@@ -356,20 +440,48 @@ const getPreviewText = (forecastJson: string): string => {
   width: 100%;
 }
 
-.forecast-meta {
-  grid-area: meta;
-  font-size: var(--font-size-xs);
-  color: var(--color-text-disabled);
+.report-footer {
+  grid-area: footer;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: var(--spacing-sm);
   width: 100%;
 }
 
+.update-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-disabled);
+}
+
 .update-time::before {
   content: '🕒';
   margin-right: var(--spacing-xs);
+}
+
+.mini-refresh-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: var(--color-background-alt);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all var(--transition-base);
+  opacity: 0.7;
+}
+
+.mini-refresh-btn:hover:not(:disabled) {
+  background: var(--color-primary-light);
+  opacity: 1;
+}
+
+.mini-refresh-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .refresh-button {
@@ -414,7 +526,7 @@ const getPreviewText = (forecastJson: string): string => {
 
 /* Responsive breakpoints */
 @media (min-width: 768px) {
-  .forecasts-list {
+  .reports-list {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   }
   
@@ -440,20 +552,16 @@ const getPreviewText = (forecastJson: string): string => {
     padding: var(--spacing-md);
   }
   
-  .forecast-card {
+  .report-card {
     padding: var(--spacing-md);
   }
   
-  .forecast-header {
+  .report-header {
     grid-template-columns: 1fr;
     grid-template-areas: 
       "title"
-      "date";
+      "meta";
     gap: var(--spacing-sm);
-  }
-  
-  .forecast-date {
-    justify-self: end;
   }
   
   .refresh-button {
@@ -469,11 +577,11 @@ const getPreviewText = (forecastJson: string): string => {
     padding: var(--spacing-sm);
   }
   
-  .forecast-card {
+  .report-card {
     padding: var(--spacing-sm);
   }
   
-  .forecast-header h3 {
+  .report-header h3 {
     font-size: var(--font-size-base);
   }
   
