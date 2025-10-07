@@ -6,12 +6,12 @@ const { connectionStatus } = useNetwork()
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'has-offline-indicator': !connectionStatus.isOnline }">
     <!-- Offline indicator -->
     <div v-if="!connectionStatus.isOnline" class="offline-indicator">
       📶 Modo offline - Mostrando datos guardados
     </div>
-    
+
     <TabLayout />
   </div>
 </template>
@@ -19,29 +19,42 @@ const { connectionStatus } = useNetwork()
 <style>
 #app {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "offline"
+    "content";
+  background-color: var(--color-background-alt);
+  font-family: var(--font-family-base);
+  overflow: hidden; /* Prevent app-level scroll */
+  width: 100%;
+  max-width: 100vw; /* Prevent horizontal overflow */
+}
+
+/* When offline indicator is not shown */
+#app:not(.has-offline-indicator) {
+  grid-template-rows: 1fr;
+  grid-template-areas: "content";
 }
 
 .offline-indicator {
-  background: #ff9800;
+  grid-area: offline;
+  background: var(--color-warning);
   color: white;
-  padding: 8px 16px;
+  padding: var(--spacing-sm) var(--spacing-lg);
   text-align: center;
-  font-size: 14px;
-  font-weight: 500;
-  z-index: 1000;
-}
-
-* {
-  margin: 0;
-  padding: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  z-index: var(--z-sticky);
+  width: 100%;
   box-sizing: border-box;
+  display: grid;
+  place-items: center;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* TabLayout takes the content area */
+.tab-layout {
+  grid-area: content;
 }
 </style>
