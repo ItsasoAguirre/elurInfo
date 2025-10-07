@@ -1,0 +1,53 @@
+{
+  "name": "elurinfo",
+  "version": "1.0.0",
+  "description": "ElurInfo - Web application for avalanche information in the Pyrenees",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "elurInfo-Frontend",
+    "elurInfo-Backend"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm run install:frontend && npm run install:backend",
+    "install:frontend": "cd elurInfo-FrontEnd && npm install",
+    "install:backend": "cd elurInfo-Backend && npm install",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd elurInfo-FrontEnd && npm run dev",
+    "dev:backend": "cd elurInfo-Backend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd elurInfo-FrontEnd && npm run build",
+    "build:backend": "cd elurInfo-Backend && npm run build",
+    "commit": "cz",
+    "prepare": "husky install",
+    "lint-commit": "commitlint --edit"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "commitizen": "^4.3.0",
+    "concurrently": "^8.2.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^8.0.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ItsasoAguirre/elurInfo.git"
+  },
+  "keywords": [
+    "avalanche",
+    "pyrenees",
+    "weather",
+    "forecast",
+    "pwa",
+    "vue",
+    "node"
+  ],
+  "author": "ItsasoAguirre",
+  "license": "MIT"
+}

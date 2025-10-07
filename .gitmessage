@@ -1,0 +1,38 @@
+# <type>(<scope>): <description>
+#
+# <optional body>
+#
+# <optional footer>
+
+# === CONVENTIONAL COMMITS FOR ELURINFO ===
+#
+# Allowed types:
+# feat:     A new feature
+# fix:      A bug fix
+# docs:     Documentation only changes
+# style:    Changes that do not affect the meaning (white-space, formatting, etc)
+# refactor: A code change that neither fixes a bug nor adds a feature
+# perf:     A code change that improves performance
+# test:     Adding missing tests or correcting existing tests
+# build:    Changes that affect the build system or external dependencies
+# ci:       Changes to CI configuration files and scripts
+# chore:    Other changes that don't modify src or test files
+# revert:   Reverts a previous commit
+#
+# Suggested scopes:
+# frontend, backend, database, api, ui, config, deps, release
+#
+# Examples:
+# feat(frontend): add avalanche map visualization
+# fix(backend): resolve SQLite connection timeout
+# docs(readme): update installation instructions
+# refactor(api): extract validation logic to separate module
+#
+# Rules:
+# - Maximum 100 characters in header
+# - Use lowercase for type and description
+# - No trailing period in description
+# - Blank line before body if present
+# - Use imperative mood ("add" not "added")
+#
+# Breaking changes: Add "!" after scope or "BREAKING CHANGE:" in footer
