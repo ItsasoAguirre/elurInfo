@@ -13,14 +13,14 @@ const MOUNTAIN_ZONES = [
 ]
 
 // GET /montana - Obtener predicciones de montaña
-router.get('/', asyncHandler(async (req: Request, res: Response) => {
+router.get('/', asyncHandler(async (_req: Request, res: Response) => {
   try {
     if (!models.isInitialized()) {
       await models.initialize()
     }
 
     // Check for valid cached data (1 hour for mountain forecasts)
-    const validHours = parseInt(process.env.CACHE_MOUNTAIN_HOURS || '1')
+    const validHours = parseInt(process.env['CACHE_MOUNTAIN_HOURS'] || '1')
     
     // Get latest forecasts for all mountain zones
     const forecasts = await models.mountainForecasts.findLatestByZones(MOUNTAIN_ZONES)
@@ -99,10 +99,16 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
       source: 'mock-data',
       message: 'Datos de prueba - Integración con AEMET pendiente'
     })
+    return
 
   } catch (error) {
     logger.error('Error fetching mountain forecasts:', error)
-    throw createError('Error al obtener predicciones de montaña', 500)
+    res.status(500).json({
+      success: false,
+      message: 'Error al obtener predicciones de montaña',
+      error: process.env['NODE_ENV'] === 'development' ? error : undefined
+    })
+    return
   }
 }))
 
@@ -126,7 +132,7 @@ router.get('/zone/:zone', asyncHandler(async (req: Request, res: Response) => {
     }
 
     // Check if data is still valid (1 hour)
-    const validHours = parseInt(process.env.CACHE_MOUNTAIN_HOURS || '1')
+    const validHours = parseInt(process.env['CACHE_MOUNTAIN_HOURS'] || '1')
     const isValid = await models.mountainForecasts.isDataValid(forecast.zone, validHours)
 
     logger.info('Serving mountain forecast for zone', { 

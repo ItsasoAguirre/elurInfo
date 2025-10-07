@@ -3,6 +3,7 @@ import { AvalancheReportModel } from './AvalancheReport'
 import { MountainForecastModel } from './MountainForecast'
 import { MunicipalForecastModel } from './MunicipalForecast'
 import { ApiCacheModel } from './ApiCache'
+import { SnowScienceReportModel } from './SnowScienceReport'
 
 export class ModelManager {
   private static instance: ModelManager
@@ -12,6 +13,7 @@ export class ModelManager {
   public mountainForecasts!: MountainForecastModel
   public municipalForecasts!: MunicipalForecastModel
   public apiCache!: ApiCacheModel
+  public snowScienceReports!: SnowScienceReportModel
 
   private constructor() {}
 
@@ -34,6 +36,11 @@ export class ModelManager {
     this.mountainForecasts = new MountainForecastModel(this.db)
     this.municipalForecasts = new MunicipalForecastModel(this.db)
     this.apiCache = new ApiCacheModel(this.db)
+    this.snowScienceReports = new SnowScienceReportModel(this.db)
+
+    // Initialize tables
+    await this.snowScienceReports.initializeTable()
+    await this.snowScienceReports.createIndexes()
   }
 
   async close(): Promise<void> {
@@ -63,9 +70,11 @@ export { AvalancheReportModel } from './AvalancheReport'
 export { MountainForecastModel } from './MountainForecast'
 export { MunicipalForecastModel } from './MunicipalForecast'
 export { ApiCacheModel } from './ApiCache'
+export { SnowScienceReportModel } from './SnowScienceReport'
 
 // Export types
 export type { AvalancheReport } from './AvalancheReport'
 export type { MountainForecast } from './MountainForecast'
 export type { MunicipalForecast } from './MunicipalForecast'
 export type { ApiCacheEntry } from './ApiCache'
+export type { SnowScienceReport } from './SnowScienceReport'
