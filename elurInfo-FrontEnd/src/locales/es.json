@@ -11,6 +11,7 @@
   "map": {
     "title": "Mapa de Avalanchas",
     "subtitle": "Cordillera pirenaica",
+    "currentZone": "Zona actual",
     "legend": {
       "risk1": "Riesgo 1 - Débil",
       "risk2": "Riesgo 2 - Limitado", 
