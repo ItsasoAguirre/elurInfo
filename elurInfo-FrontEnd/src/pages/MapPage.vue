@@ -1,8 +1,8 @@
 <template>
   <div class="map-page">
     <div class="page-header">
-      <h1>Mapa de Avalanchas</h1>
-      <p class="subtitle">Cordillera pirenaica</p>
+      <h1>{{ t('map.title') }}</h1>
+      <p class="subtitle">{{ t('map.subtitle') }}</p>
     </div>
     
     <div class="map-container" ref="mapContainer">
@@ -12,23 +12,23 @@
     <div class="map-legend">
       <div class="legend-item">
         <span class="legend-color risk-1"></span>
-        <span>Riesgo 1 - Débil</span>
+        <span>{{ t('map.legend.risk1') }}</span>
       </div>
       <div class="legend-item">
         <span class="legend-color risk-2"></span>
-        <span>Riesgo 2 - Limitado</span>
+        <span>{{ t('map.legend.risk2') }}</span>
       </div>
       <div class="legend-item">
         <span class="legend-color risk-3"></span>
-        <span>Riesgo 3 - Notable</span>
+        <span>{{ t('map.legend.risk3') }}</span>
       </div>
       <div class="legend-item">
         <span class="legend-color risk-4"></span>
-        <span>Riesgo 4 - Fuerte</span>
+        <span>{{ t('map.legend.risk4') }}</span>
       </div>
       <div class="legend-item">
         <span class="legend-color risk-5"></span>
-        <span>Riesgo 5 - Muy fuerte</span>
+        <span>{{ t('map.legend.risk5') }}</span>
       </div>
     </div>
   </div>
@@ -37,9 +37,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAvalancheMap } from '../composables/useAvalancheMap'
+import { useLanguage } from '../composables/useLanguage'
 
 const mapContainer = ref<HTMLElement>()
 const { initializeMap, destroyMap } = useAvalancheMap()
+const { t } = useLanguage()
 
 onMounted(() => {
   if (mapContainer.value) {

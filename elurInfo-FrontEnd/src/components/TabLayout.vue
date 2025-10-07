@@ -23,30 +23,33 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { useLanguage } from '../composables/useLanguage'
 import type { TabItem } from '../types'
 
 const route = useRoute()
+const { t } = useLanguage()
 
-const tabs: TabItem[] = [
+const tabs = computed<TabItem[]>(() => [
   {
     id: 'mapa',
-    name: 'Mapa',
+    name: t('navigation.map'),
     path: '/mapa',
     icon: '🗺️'
   },
   {
     id: 'estaciones',
-    name: 'Estaciones',
+    name: t('navigation.stations'),
     path: '/estaciones',
     icon: '🏔️'
   },
   {
     id: 'ajustes',
-    name: 'Ajustes',
+    name: t('navigation.settings'),
     path: '/ajustes',
     icon: '⚙️'
   }
-]
+])
 </script>
 
 <style scoped>

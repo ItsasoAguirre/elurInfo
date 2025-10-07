@@ -1,0 +1,94 @@
+{
+  "app": {
+    "offline": "📶 Lineaz kanpoko modua - Gordetako datuak erakusten",
+    "title": "ElurInfo"
+  },
+  "navigation": {
+    "map": "Mapa",
+    "stations": "Estazioak",
+    "settings": "Ezarpenak"
+  },
+  "map": {
+    "title": "Elur-jausien Mapa",
+    "subtitle": "Pirinioetako mendilerroa",
+    "legend": {
+      "risk1": "1. Arriskua - Ahula",
+      "risk2": "2. Arriskua - Mugatua",
+      "risk3": "3. Arriskua - Nabaria",
+      "risk4": "4. Arriskua - Indartsu",
+      "risk5": "5. Arriskua - Oso indartsu"
+    }
+  },
+  "stations": {
+    "title": "Estazioak",
+    "subtitle": "Mendialdeko iragarpenak",
+    "loading": "Iragarpenak kargatzen...",
+    "error": "Errorea iragarpenak kargatzean",
+    "retry": "Berriz saiatu",
+    "empty": "Ez dago iragarpenik eskuragarri",
+    "updated": "Eguneratua:",
+    "preview": "Xehetasunak ikusi",
+    "forecastAvailable": "Iragarpena eskuragarri"
+  },
+  "settings": {
+    "title": "Ezarpenak",
+    "subtitle": "Aplikazioaren konfigurazioa",
+    "language": {
+      "title": "Hizkuntza",
+      "label": "Aplikazioaren hizkuntza"
+    },
+    "zone": {
+      "title": "Gustoko Zona",
+      "label": "Lehenetsitako zona",
+      "none": "Bat ere ez",
+      "aragon": "Aragoiko Pirinioak",
+      "navarre": "Nafarroako Pirinioak",
+      "catalonia": "Kataluniako Pirinioak"
+    },
+    "updates": {
+      "title": "Eguneraketa",
+      "auto": "Eguneraketa automatikoa",
+      "autoDescription": "Datuak automatikoki eguneratu eskuragarri dagoenean",
+      "interval": "Eguneraketa tartea",
+      "intervals": {
+        "15": "15 minutu",
+        "30": "30 minutu",
+        "60": "Ordu 1",
+        "120": "2 ordu"
+      }
+    },
+    "data": {
+      "title": "Datuak",
+      "clear": "Lineaz kanpoko datuak garbitu",
+      "clearDescription": "Lokalki gordetako datu guztiak ezabatu",
+      "confirmClear": "Ziur zaude lineaz kanpoko datu guztiak ezabatu nahi dituzula?",
+      "cleared": "Lineaz kanpoko datuak behar bezala ezabatu dira",
+      "clearError": "Errorea lineaz kanpoko datuak ezabatzean"
+    },
+    "info": {
+      "title": "Informazioa",
+      "version": "Bertsioa:",
+      "lastUpdate": "Azken eguneraketa:",
+      "connection": "Konexioaren egoera:",
+      "online": "Linean",
+      "offline": "Lineaz kanpo"
+    }
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English",
+    "fr": "Français",
+    "ca": "Català",
+    "eu": "Euskera"
+  },
+  "common": {
+    "loading": "Kargatzen...",
+    "error": "Errorea",
+    "retry": "Berriz saiatu",
+    "save": "Gorde",
+    "cancel": "Utzi",
+    "ok": "Ados",
+    "yes": "Bai",
+    "no": "Ez"
+  }
+}

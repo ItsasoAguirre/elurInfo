@@ -1,56 +1,56 @@
 <template>
   <div class="settings-page">
     <div class="page-header">
-      <h1>Ajustes</h1>
-      <p class="subtitle">Configuración de la aplicación</p>
+      <h1>{{ t('settings.title') }}</h1>
+      <p class="subtitle">{{ t('settings.subtitle') }}</p>
     </div>
     
     <div class="settings-content">
       <div class="settings-section">
-        <h2>Idioma</h2>
+        <h2>{{ t('settings.language.title') }}</h2>
         <div class="settings-section-content">
           <div class="setting-item">
-            <label for="language-select">Idioma de la aplicación</label>
+            <label for="language-select">{{ t('settings.language.label') }}</label>
             <select 
               id="language-select"
-              v-model="settings.language"
-              @change="saveSettings"
+              :value="settings.language"
+              @change="onLanguageChange(($event.target as HTMLSelectElement).value)"
               class="setting-select"
             >
-              <option value="es">Español</option>
-              <option value="ca">Català</option>
-              <option value="eu">Euskera</option>
+              <option v-for="locale in availableLocales" :key="locale.code" :value="locale.code">
+                {{ locale.flag }} {{ locale.name }}
+              </option>
             </select>
           </div>
         </div>
       </div>
 
       <div class="settings-section">
-        <h2>Zona Favorita</h2>
+        <h2>{{ t('settings.zone.title') }}</h2>
         <div class="settings-section-content">
           <div class="setting-item">
-            <label for="zone-select">Zona predeterminada</label>
+            <label for="zone-select">{{ t('settings.zone.label') }}</label>
             <select 
               id="zone-select"
               v-model="settings.favoriteZone"
               @change="saveSettings"
               class="setting-select"
             >
-              <option value="">Ninguna</option>
-              <option value="pirineo-aragones">Pirineo Aragonés</option>
-              <option value="pirineo-navarro">Pirineo Navarro</option>
-              <option value="pirineo-catalan">Pirineo Catalán</option>
+              <option value="">{{ t('settings.zone.none') }}</option>
+              <option value="pirineo-aragones">{{ t('settings.zone.aragon') }}</option>
+              <option value="pirineo-navarro">{{ t('settings.zone.navarre') }}</option>
+              <option value="pirineo-catalan">{{ t('settings.zone.catalonia') }}</option>
             </select>
           </div>
         </div>
       </div>
 
       <div class="settings-section">
-        <h2>Actualización</h2>
+        <h2>{{ t('settings.updates.title') }}</h2>
         <div class="settings-section-content">
           <div class="setting-item">
             <div class="setting-toggle">
-              <label for="auto-refresh">Actualización automática</label>
+              <label for="auto-refresh">{{ t('settings.updates.auto') }}</label>
               <input 
                 id="auto-refresh"
                 type="checkbox" 
@@ -61,57 +61,57 @@
               <span class="toggle-slider"></span>
             </div>
             <p class="setting-description">
-              Actualizar datos automáticamente cuando esté disponible
+              {{ t('settings.updates.autoDescription') }}
             </p>
           </div>
           
           <div v-if="settings.autoRefresh" class="setting-item">
-            <label for="refresh-interval">Intervalo de actualización</label>
+            <label for="refresh-interval">{{ t('settings.updates.interval') }}</label>
             <select 
               id="refresh-interval"
               v-model="settings.refreshInterval"
               @change="saveSettings"
               class="setting-select"
             >
-              <option :value="15">15 minutos</option>
-              <option :value="30">30 minutos</option>
-              <option :value="60">1 hora</option>
-              <option :value="120">2 horas</option>
+              <option :value="15">{{ t('settings.updates.intervals.15') }}</option>
+              <option :value="30">{{ t('settings.updates.intervals.30') }}</option>
+              <option :value="60">{{ t('settings.updates.intervals.60') }}</option>
+              <option :value="120">{{ t('settings.updates.intervals.120') }}</option>
             </select>
           </div>
         </div>
       </div>
 
       <div class="settings-section">
-        <h2>Datos</h2>
+        <h2>{{ t('settings.data.title') }}</h2>
         <div class="settings-section-content">
           <div class="setting-item">
             <button @click="clearOfflineData" class="danger-button">
-              Limpiar datos offline
+              {{ t('settings.data.clear') }}
             </button>
             <p class="setting-description">
-              Elimina todos los datos guardados localmente
+              {{ t('settings.data.clearDescription') }}
             </p>
           </div>
         </div>
       </div>
 
       <div class="settings-section">
-        <h2>Información</h2>
+        <h2>{{ t('settings.info.title') }}</h2>
         <div class="settings-section-content">
           <div class="info-list">
             <div class="info-item">
-              <span class="info-label">Versión:</span>
+              <span class="info-label">{{ t('settings.info.version') }}</span>
               <span class="info-value">1.0.0</span>
             </div>
             <div class="info-item">
-              <span class="info-label">Última actualización:</span>
+              <span class="info-label">{{ t('settings.info.lastUpdate') }}</span>
               <span class="info-value">{{ lastUpdate }}</span>
             </div>
             <div class="info-item">
-              <span class="info-label">Estado de conexión:</span>
+              <span class="info-label">{{ t('settings.info.connection') }}</span>
               <span class="info-value" :class="connectionClass">
-                {{ isOnline() ? 'En línea' : 'Sin conexión' }}
+                {{ isOnline() ? t('settings.info.online') : t('settings.info.offline') }}
               </span>
             </div>
           </div>
@@ -125,14 +125,16 @@
 import { computed } from 'vue'
 import { useSettings } from '../composables/useSettings'
 import { useNetwork } from '../composables/useNetwork'
+import { useLanguage } from '../composables/useLanguage'
 import { offlineService } from '../services/offline.service'
 
 const { settings, saveSettings, loadSettings } = useSettings()
 const { isOnline } = useNetwork()
+const { t, availableLocales, setLanguage } = useLanguage()
 
 const lastUpdate = computed(() => {
   // TODO: Get real last update time from stored data
-  return new Date().toLocaleString('es-ES')
+  return new Date().toLocaleString()
 })
 
 const connectionClass = computed(() => {
@@ -140,15 +142,21 @@ const connectionClass = computed(() => {
 })
 
 const clearOfflineData = async () => {
-  if (confirm('¿Estás seguro de que quieres eliminar todos los datos offline?')) {
+  if (confirm(t('settings.data.confirmClear'))) {
     try {
       await offlineService.clearAllData()
-      alert('Datos offline eliminados correctamente')
+      alert(t('settings.data.cleared'))
     } catch (error) {
       console.error('Error clearing offline data:', error)
-      alert('Error al eliminar los datos offline')
+      alert(t('settings.data.clearError'))
     }
   }
+}
+
+const onLanguageChange = (languageCode: string) => {
+  setLanguage(languageCode)
+  settings.language = languageCode as 'es' | 'en' | 'fr' | 'ca' | 'eu'
+  saveSettings()
 }
 
 // Load settings on mount

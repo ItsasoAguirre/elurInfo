@@ -1,5 +1,3 @@
-import type { MunicipalForecast } from '../types'
-
 interface Municipality {
   id: string
   name: string

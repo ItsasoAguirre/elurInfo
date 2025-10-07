@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import TabLayout from './components/TabLayout.vue'
 import { useNetwork } from './composables/useNetwork'
+import { useLanguage } from './composables/useLanguage'
 
 const { connectionStatus } = useNetwork()
+const { t } = useLanguage()
 </script>
 
 <template>
   <div id="app" :class="{ 'has-offline-indicator': !connectionStatus.isOnline }">
     <!-- Offline indicator -->
     <div v-if="!connectionStatus.isOnline" class="offline-indicator">
-      📶 Modo offline - Mostrando datos guardados
+      {{ t('app.offline') }}
     </div>
 
     <TabLayout />

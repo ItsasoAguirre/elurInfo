@@ -1,15 +1,15 @@
 <template>
   <div class="stations-page">
     <div class="page-header">
-      <h1>Estaciones</h1>
-      <p class="subtitle">Predicciones de montaña</p>
+      <h1>{{ t('stations.title') }}</h1>
+      <p class="subtitle">{{ t('stations.subtitle') }}</p>
     </div>
     
     <div class="stations-content">
       <!-- Loading state -->
       <div v-if="loading" class="loading-state">
         <div class="spinner"></div>
-        <p>Cargando predicciones...</p>
+        <p>{{ t('stations.loading') }}</p>
       </div>
       
       <!-- Error state -->
@@ -17,7 +17,7 @@
         <span class="error-icon">⚠️</span>
         <p>{{ error }}</p>
         <button @click="loadForecasts" class="retry-button">
-          Reintentar
+          {{ t('stations.retry') }}
         </button>
       </div>
       
@@ -40,7 +40,7 @@
           
           <div class="forecast-meta">
             <span class="update-time">
-              Actualizado: {{ formatTime(forecast.last_update) }}
+              {{ t('stations.updated') }} {{ formatTime(forecast.last_update) }}
             </span>
           </div>
         </div>
@@ -49,7 +49,7 @@
       <!-- Empty state -->
       <div v-if="!loading && !error && forecasts.length === 0" class="empty-state">
         <span class="empty-icon">🏔️</span>
-        <p>No hay predicciones disponibles</p>
+        <p>{{ t('stations.empty') }}</p>
       </div>
     </div>
     
@@ -67,6 +67,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useMountainForecasts } from '../composables/useMountainForecasts'
+import { useLanguage } from '../composables/useLanguage'
 
 const { 
   forecasts, 
@@ -76,13 +77,20 @@ const {
   selectForecast 
 } = useMountainForecasts()
 
+const { t, currentLanguage } = useLanguage()
+
 onMounted(() => {
   loadForecasts()
 })
 
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString)
-  return date.toLocaleDateString('es-ES', {
+  const locale = currentLanguage.value === 'ca' ? 'ca-ES' : 
+                currentLanguage.value === 'eu' ? 'eu-ES' :
+                currentLanguage.value === 'en' ? 'en-GB' :
+                currentLanguage.value === 'fr' ? 'fr-FR' : 'es-ES'
+  
+  return date.toLocaleDateString(locale, {
     weekday: 'short',
     day: 'numeric',
     month: 'short'
@@ -91,7 +99,12 @@ const formatDate = (dateString: string): string => {
 
 const formatTime = (dateString: string): string => {
   const date = new Date(dateString)
-  return date.toLocaleTimeString('es-ES', {
+  const locale = currentLanguage.value === 'ca' ? 'ca-ES' : 
+                currentLanguage.value === 'eu' ? 'eu-ES' :
+                currentLanguage.value === 'en' ? 'en-GB' :
+                currentLanguage.value === 'fr' ? 'fr-FR' : 'es-ES'
+  
+  return date.toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit'
   })
@@ -101,9 +114,9 @@ const getPreviewText = (forecastJson: string): string => {
   try {
     const data = JSON.parse(forecastJson)
     // Extract relevant preview information
-    return data.descripcion || data.resumen || 'Predicción disponible'
+    return data.descripcion || data.resumen || t('stations.forecastAvailable')
   } catch {
-    return 'Ver detalles'
+    return t('stations.preview')
   }
 }
 </script>
