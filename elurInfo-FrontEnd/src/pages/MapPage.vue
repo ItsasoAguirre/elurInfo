@@ -3,6 +3,10 @@
     <div class="page-header">
       <h1>{{ t('map.title') }}</h1>
       <p class="subtitle">{{ t('map.subtitle') }}</p>
+      <div v-if="selectedZone" class="zone-info">
+        <span class="zone-label">{{ t('map.currentZone') }}:</span>
+        <span class="zone-name">{{ getZoneDisplayName(selectedZone) }}</span>
+      </div>
     </div>
     
     <div class="map-container" ref="mapContainer">
@@ -35,15 +39,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useAvalancheMap } from '../composables/useAvalancheMap'
 import { useLanguage } from '../composables/useLanguage'
+import { useSettings } from '../composables/useSettings'
 
 const mapContainer = ref<HTMLElement>()
-const { initializeMap, destroyMap } = useAvalancheMap()
+const { initializeMap, destroyMap, updateMapCenter } = useAvalancheMap()
 const { t } = useLanguage()
+const { settings, loadSettings } = useSettings()
 
-onMounted(() => {
+// Computed property for selected zone
+const selectedZone = computed(() => settings.favoriteZone)
+
+// Helper function to get zone display name
+const getZoneDisplayName = (zoneKey: string): string => {
+  const zoneNames: Record<string, string> = {
+    'pirineo-aragones': 'Pirineo Aragonés',
+    'pirineo-navarro': 'Pirineo Navarro',
+    'pirineo-catalan': 'Pirineo Catalán'
+  }
+  return zoneNames[zoneKey] || zoneKey
+}
+
+// Watch for changes in favorite zone and update map accordingly
+watch(selectedZone, (newZone) => {
+  if (newZone && mapContainer.value) {
+    updateMapCenter()
+  }
+}, { immediate: false })
+
+onMounted(async () => {
+  // Load settings first to ensure we have the latest zone selection
+  await loadSettings()
+  
   if (mapContainer.value) {
     initializeMap(mapContainer.value)
   }
@@ -78,7 +107,7 @@ onUnmounted(() => {
   width: 100%;
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto auto auto;
   gap: var(--spacing-xs);
 }
 
@@ -94,6 +123,30 @@ onUnmounted(() => {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   margin: 0;
+}
+
+.zone-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--spacing-sm);
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-background-alt);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  margin-top: var(--spacing-xs);
+}
+
+.zone-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.zone-name {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
 }
 
 .map-container {
