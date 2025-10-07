@@ -1,0 +1,172 @@
+# ElurInfo - GitIgnore Configuration
+# ===================================
+
+# === DEPENDENCIAS ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# === ARCHIVOS DE DISTRIBUCIÓN ===
+dist/
+dist-ssr/
+build/
+*.local
+
+# === VARIABLES DE ENTORNO ===
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.example
+
+# === LOGS ===
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# === BASE DE DATOS ===
+# SQLite databases
+*.sqlite
+*.sqlite3
+*.db
+data/
+data/backups/
+*.backup
+
+# === CAPACITOR ===
+# Capacitor generated files
+android/
+ios/
+.capacitor/
+capacitor.config.json
+
+# === FRONTEND (Vue/Vite) ===
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Hot reload
+*.tsbuildinfo
+
+# === BACKEND (Node.js/Express) ===
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# Bower dependency directory (https://bower.io/)
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release
+
+# TypeScript compiled files
+*.tsbuildinfo
+dist/
+lib/
+
+# === TEMPORALES Y SISTEMA ===
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+desktop.ini
+
+# === TESTING ===
+# Jest
+coverage/
+.nyc_output/
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+
+# === CERTIFICADOS Y CLAVES ===
+*.pem
+*.key
+*.crt
+*.p12
+
+# === ARCHIVOS DE CONFIGURACIÓN TEMPORAL ===
+*.tmp
+*.temp
+.cache/
+
+# === ESPECÍFICO DEL PROYECTO ===
+# Archivos de backup personalizados
+*.bak
+*.backup
+
+# Archivos de desarrollo temporal
+*.dev
+*.test
+
+# === PWA ===
+# Service Worker cache
+sw.js.map
+workbox-*.js
+workbox-*.js.map
+
+# === DOCKER ===
+.dockerignore
+Dockerfile
+docker-compose*.yml
+
+# === OTROS ===
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env.test
+
+# parcel-bundler cache (https://parceljs.org/)
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# Temporary folders
+tmp/
+temp/
